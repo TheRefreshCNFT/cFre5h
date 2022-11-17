@@ -1,0 +1,333 @@
+<!DOCTYPE HTML>
+  <html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+    body, html {
+      padding:0 !important;
+      margin: 0 !important;
+      margin-bottom: 0px;
+      padding-bottom: 0px;
+    }
+
+    * {
+      padding: 0;
+      margin: 0;
+    }
+      body  {
+		  background-color: black;
+		  overflow: hidden;
+		}
+
+/* The Modal  */
+			.modal {
+			  display: none;
+			  position: fixed;
+			  z-index: 6;
+			  left: 0;
+			  top: 0;
+			  width: 100%;
+			  height: 100%;
+			  background-color: black;
+			  padding-top: 10px;
+			}
+
+			.modal-buttons {
+				margin:auto;
+			  	max-width: 650px;
+			}
+
+			.modal-content {
+			  margin: auto;
+			  display: block;
+			  max-width: 650px;
+			}
+
+			.modal-content, #caption {
+			  animation-name: zoom;
+			  animation-duration: 0.6s;
+			}
+
+			@keyframes zoom {
+			  from {transform:scale(0)}
+			  to {transform:scale(1)}
+			}
+
+			.close {
+			  right: 35px;
+			  color: #f1f1f1;
+			  font-size: 40px;
+			  font-weight: bold;
+			  transition: 0.3s;
+			}
+
+			.close:hover,
+			.close:focus {
+			  color: #bbb;
+			  text-decoration: none;
+			  cursor: pointer;
+			}
+
+			@media only screen and (max-width: 700px){
+			  .modal-content {
+				width: 100%;
+			  }
+			}
+
+			button {
+				margin-right: 10px;
+				padding: 5px;
+			}
+
+			#myCanvasDesign, #myCanvasBlack {
+				display: none;
+			}
+      </style>
+    </head>
+    <body>
+
+		<div style="text-align:center">
+			/*Gradient canvas*/
+			<canvas id="myCanvasGrad" style="object-fit: contain; top: 0; left: 0; position: absolute;"></canvas>
+			/*Design canvas*/
+			<canvas id="myCanvasDesign" style="object-fit: contain; top: 0; left: 0; position: absolute;"></canvas>
+			/*Black canvas*/
+			<canvas id="myCanvasBlack" style="object-fit: contain; top: 0; left: 0; position: absolute;"></canvas>
+		</div>
+
+<!-- The Modal -->
+		<div id="myModal" class="modal">
+
+<!-- Modal Content  -->
+			<table class="modal-buttons">
+				<tr>
+					<th ><button id="transparent" type="button">Transparent BG</button><button id="withbg" type="button">Gradien BG</button><button id="blackbg" type="button">Black BG</button></th>
+
+					<th >
+<!-- The Close Button -->
+						<span class="close" style="float: right;">&times;</span>
+					</th>
+				</tr>
+			</table>
+
+			<img class="modal-content" id="imgGrad" style="object-fit: contain; width: 100vw; height: 80vh;" width="4096" height="4096">
+			<img class="modal-content" id="imgTrans" style="object-fit: contain; width: 100vw; height: 80vh;" width="4096" height="4096">
+			<img class="modal-content" id="imgBlack" style="object-fit: contain; width: 100vw; height: 80vh;" width="4096" height="4096">
+		</div>
+
+    	<script type="text/javascript">
+
+/*Get random numbers*/
+			function getRandomInt(min, max) {
+				return Math.floor(Math.random() * (max - min + 1) + min);
+			}
+
+			function getRandomDec(min,max) {
+				return Math.random() * (max - min) + min;
+			}
+/*Get random color*/
+			function randomColor() {
+				return '#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0');
+			}
+
+/*Release canvas from memory*/
+			function releaseCanvas(canvas) {
+				canvas.width = 1;
+				canvas.style.width = "1vw";
+				canvas.height = 1;
+				canvas.style.height = "1vh";
+				const ctx = canvas.getContext('2d');
+				ctx && ctx.clearRect(0, 0, 1, 1);
+			}
+
+/*Globals*/
+			var color1 = "#45B415";
+			var color2 = "#F076A5";
+    	var color3 = "#CA1E75";
+			var color4 = "#984E6B";
+    	var color5 = "#6C595B";
+      var color6 = "#665814";
+      var color7 = "#840309";
+      var color8 = "#5E157A";
+      var color9 = "#CF21B2";
+      var color10 = "#A9882E";
+
+/*Design canvas setup*/
+			var canvasDesign = document.getElementById('myCanvasDesign');
+			canvasDesign.width = 4096;
+			canvasDesign.height = 4096;
+			canvasDesign.style.width = "100vw";
+			canvasDesign.style.height = '100vh';
+			canvasDesign.getContext('2d').scale(2,2);
+			var ctxDesign = canvasDesign.getContext("2d");
+/*Design radial gradient*/
+			var grdLine = ctxDesign.createRadialGradient(1024, 1024, 100, 1024, 1024, 1024);
+			grdLine.addColorStop(Math.random(), color3);
+			grdLine.addColorStop(Math.random(), color4);
+			grdLine.addColorStop(Math.random(), color5);
+      grdLine.addColorStop(Math.random(), color6);
+      grdLine.addColorStop(Math.random(), color7);
+      grdLine.addColorStop(Math.random(), color8);
+      grdLine.addColorStop(Math.random(), color9);
+      grdLine.addColorStop(Math.random(), color10);
+/*Design*/
+			var c = document.getElementById("myCanvasDesign");
+			var ctxDesign2 =c.getContext("2d");
+			var centerX = 1024;
+			var centerY = 1024;
+			ctxDesign2.moveTo(centerX, centerY);
+			var gap = Math.floor(Math.random() * 1) + .0079;
+			var dSize = getRandomInt(100000, 130000);
+			var increment = getRandomDec(354.637,355.637);
+    	var theta = increment;
+			while( theta < Math.floor(Math.random() * 50.090909095) + dSize) {
+			var newX = centerX + theta * Math.cos(theta) * gap;
+			var newY = centerY + theta * Math.sin(theta) * gap;
+			ctxDesign2.lineTo(newX, newY);
+			theta = theta + increment;
+			}
+			ctxDesign2.shadowColor = "#222222";
+			ctxDesign2.shadowOffsetX = getRandomInt(-10, 10);
+			ctxDesign2.shadowOffsetY = getRandomInt(-10, 10);
+			ctxDesign2.shadowBlur = 20;
+			ctxDesign2.strokeStyle = grdLine;
+			ctxDesign2.lineWidth = 3;
+			ctxDesign2.stroke();
+
+/*canvas - gradient background*/
+			var canvasGrad = document.getElementById('myCanvasGrad');
+			canvasGrad.width =4096;
+			canvasGrad.height = 4096;
+			canvasGrad.style.width = "100vw";
+			canvasGrad.style.height = '100vh';
+			canvasGrad.getContext('2d').scale(2,2);
+			var ctxGrad = canvasGrad.getContext("2d");
+			var grdBg = ctxGrad.createLinearGradient((Math.random() * 4096), (Math.random() * 4096), (Math.random() * 4096), (Math.random() * 4096));
+			grdBg.addColorStop(0, color1);
+			grdBg.addColorStop(1, color2);
+			ctxGrad.fillStyle = grdBg;
+			ctxGrad.fillRect(0, 0, 4096, 4096);
+			ctxGrad.drawImage(canvasDesign, 0, 0, 4096, 4096, 0, 0, 2048, 2048);
+
+/*canvas - black background*/
+			var canvasBlack = document.getElementById('myCanvasBlack');
+			canvasBlack.width =4096;
+			canvasBlack.height = 4096;
+			canvasBlack.style.width = "100vw";
+			canvasBlack.style.height = '100vh';
+			canvasBlack.getContext('2d').scale(2,2);
+			var ctxBlack = canvasBlack.getContext("2d");
+/* fill black canvas */
+			ctxBlack.fillStyle = "black";
+			ctxBlack.fillRect(0, 0, 4096, 4096);
+/*Copy design canvas onto black */
+			ctxBlack.drawImage(canvasDesign, 0, 0, 4096, 4096, 0, 0, 2048, 2048);
+
+/*onclick refresh event*/
+			let timer;
+			document.getElementById("myCanvasGrad").addEventListener('click', event => {
+			  if (event.detail === 1) {
+				timer = setTimeout(() => {
+/*Release every canvas*/
+					var canvases = document.getElementsByTagName("canvas");
+					var canvasesList = Array.prototype.slice.call(canvases);
+            		canvasesList.forEach(releaseCanvas);
+					location.reload();
+				}, 200)
+			  }
+			});
+			document.getElementById("myCanvasGrad").addEventListener('dblclick', event => {
+			  clearTimeout(timer);
+				modalUp();
+			})
+
+/*Run release even when they refresh not with click (F5, refresh button, closing page)*/
+			window.addEventListener('pagehide', (event) => {
+/*Release every canvas*/
+					var canvases = document.getElementsByTagName("canvas");
+					var canvasesList = Array.prototype.slice.call(canvases);
+            		canvasesList.forEach(releaseCanvas);
+			});
+
+/*save images on mobile*/
+ 			function modalUp() {
+
+/* Save canvases into images */
+/* Gradient image */
+				var inputValGrad = myCanvasGrad.toDataURL({format: 'image/png', quality:1, width:4096, height:4096});
+				var imgGrad = new Image();
+				imgGrad.src = inputValGrad;
+
+/* Transparent image */
+				var inputValTrans = canvasDesign.toDataURL({format: 'image/png', quality:1, width:4096, height:4096});
+				var imgTrans = new Image();
+				imgTrans.src = inputValTrans;
+
+/* Black Image */
+				var inputValBlack = myCanvasBlack.toDataURL({format: 'image/png', quality:1, width:4096, height:4096});
+				var imgBlack = new Image();
+				imgBlack.src = inputValBlack;
+
+/* display modal */
+				var modal = document.getElementById("myModal");
+				modal.style.display = "block";
+
+/* Get the gradient image and insert it inside the modal */
+				var modalimgGrad = document.getElementById("imgGrad");
+			    modalimgGrad.style.display = "block";
+			    modalimgGrad.src = inputValGrad;
+
+/* Get the transparent image and insert it inside the modal */
+				var modalImgTrans = document.getElementById("imgTrans");
+			    modalImgTrans.style.display = "none";
+			    modalImgTrans.src = inputValTrans;
+
+/* Get the black image and insert it inside the modal */
+				var modalImgBlack = document.getElementById("imgBlack");
+			    modalImgBlack.style.display = "none";
+			    modalImgBlack.src = inputValBlack;
+
+/* active button is red */
+				document.getElementById("withbg").style.color = "red";
+
+				document.getElementById("transparent").onclick = function() {
+					modalimgGrad.style.display = "none";
+					modalImgBlack.style.display = "none";
+					modalImgTrans.style.display = "block";
+
+					this.style.color = "red";
+					document.getElementById("withbg").style.color = "black";
+					document.getElementById("blackbg").style.color = "black";
+				}
+
+				document.getElementById("withbg").onclick = function() {
+					modalimgGrad.style.display = "block";
+					modalImgTrans.style.display = "none";
+					modalImgBlack.style.display = "none";
+
+					document.getElementById("transparent").style.color = "black";
+					this.style.color = "red";
+					document.getElementById("blackbg").style.color = "black";
+				}
+
+				document.getElementById("blackbg").onclick = function() {
+					modalImgBlack.style.display = "block";
+					modalImgTrans.style.display = "none";
+					modalimgGrad.style.display = "none";
+
+					document.getElementById("transparent").style.color = "black";
+					document.getElementById("withbg").style.color = "black";
+					this.style.color = "red";
+				}
+
+/* Get the <span> element that closes the modal */
+				var span = document.getElementsByClassName("close")[0];
+
+/* When the user clicks on <span> (x), close the modal */
+				span.onclick = function() {
+				modal.style.display = "none";
+				}
+         	}
+  </script>
+      </body>
+          </html>
