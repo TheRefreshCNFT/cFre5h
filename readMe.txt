@@ -1,0 +1,1 @@
+The Refresh CNFT has provided the base code for a community collection on the Cardano Blockchain. We're looking to have some fun with the community! If you are interested in creating code based art and would like to contribute to the collection get in touch with us on Twitter https://twitter.com/TheRefreshCNFT or email ThisCrazyLife tcl@therefreshcnft.com.. 
